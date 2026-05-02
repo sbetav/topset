@@ -3,3 +3,10 @@
 @import "heroui-native/styles";
 @source '../node_modules/heroui-native/lib';
 @source "../components";
+
+@theme {
+  --font-normal: "Geist_400Regular";
+  --font-medium: "Geist_500Medium";
+  --font-semibold: "Geist_600SemiBold";
+  --font-bold: "Geist_700Bold";
+}

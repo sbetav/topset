@@ -1,15 +1,15 @@
 import { ControlField } from "heroui-native/control-field";
 import { Description } from "heroui-native/description";
 import { Label } from "heroui-native/label";
-import { Surface } from "heroui-native/surface";
 import { View } from "react-native";
 import { Uniwind, useUniwind } from "uniwind";
+import Card from "../ui/card";
 
 export default function ThemeToggle() {
   const { theme } = useUniwind();
 
   return (
-    <Surface className="px-5 py-4 w-full">
+    <Card className="w-full">
       <ControlField
         isSelected={theme === "dark"}
         onSelectedChange={() =>
@@ -20,10 +20,10 @@ export default function ThemeToggle() {
           <Label>
             <Label.Text>Modo oscuro</Label.Text>
           </Label>
-          <Description>Cambia entre modo claro y oscuro</Description>
+          <Description>Cambia el tema de la aplicación</Description>
         </View>
         <ControlField.Indicator />
       </ControlField>
-    </Surface>
+    </Card>
   );
 }
