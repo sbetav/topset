@@ -72,7 +72,7 @@ const Exercise = () => {
       await createExercise(values);
     }
 
-    router.replace("/exercises");
+    router.back();
   }
 
   return (
