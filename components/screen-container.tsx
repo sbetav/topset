@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { ScrollView, ScrollViewProps, View, ViewProps } from "react-native";
 
-const SCREEN_CLASSNAME = "p-6 pb-7";
+const SCREEN_CLASSNAME = "p-5 pb-7";
 
 const ScreenContainer = ({ children, className, ...props }: ViewProps) => {
   return (
