@@ -66,7 +66,7 @@ const Exercises = () => {
         data={exercises}
         keyExtractor={(item) => String(item.id)}
         keyboardShouldPersistTaps="handled"
-        contentContainerClassName="gap-4 pb-28"
+        contentContainerClassName="gap-4 pb-24"
         ListHeaderComponent={
           <View className="gap-4 mx-px">
             <View className="flex-row justify-between">
@@ -149,7 +149,12 @@ const Exercises = () => {
       <ExerciseDetailsSheet
         isOpen={isSheetOpen}
         onOpenChange={setIsSheetOpen}
-        handleDeleteExercise={() => setIsDeleteDialogOpen(true)}
+        handleDeleteExercise={() => {
+          setIsSheetOpen(false);
+          setTimeout(() => {
+            setIsDeleteDialogOpen(true);
+          }, 150);
+        }}
         handleEditExercise={handleEditExercise}
         selectedExercise={selectedExercise}
       />
