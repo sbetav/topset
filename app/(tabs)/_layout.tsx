@@ -117,7 +117,7 @@ export default function Layout() {
           {activeTabLayout ? (
             <Animated.View
               pointerEvents="none"
-              className="bg-accent/15 absolute rounded-full left-0"
+              className="bg-accent-soft absolute rounded-full left-0"
               style={[
                 {
                   top: TAB_LIST_PADDING,

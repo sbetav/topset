@@ -50,7 +50,7 @@ const ExerciseDetailsSheet = ({
                 </Empty.Media>
                 <Empty.Title>No hay estadísticas aún</Empty.Title>
                 <Empty.Description>
-                  Podrás ver tu progreso aquí.
+                  Podrás ver tu progreso aquí
                 </Empty.Description>
               </Empty.Header>
             </Empty>

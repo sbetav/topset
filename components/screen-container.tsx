@@ -1,6 +1,13 @@
 import { cn } from "@/lib/utils";
 import React from "react";
-import { ScrollView, ScrollViewProps, View, ViewProps } from "react-native";
+import {
+    FlatList,
+    FlatListProps,
+    ScrollView,
+    ScrollViewProps,
+    View,
+    ViewProps,
+} from "react-native";
 
 const SCREEN_CLASSNAME = "p-5 pb-7";
 
@@ -31,4 +38,20 @@ const ScrollableScreenContainer = ({
   );
 };
 
-export { ScreenContainer, ScrollableScreenContainer };
+const FlatListScreenContainer = <T,>({
+  contentContainerClassName,
+  ...props
+}: FlatListProps<T>) => {
+  return (
+    <FlatList
+      keyboardShouldPersistTaps="handled"
+      contentContainerClassName={cn(
+        SCREEN_CLASSNAME,
+        contentContainerClassName,
+      )}
+      {...props}
+    />
+  );
+};
+
+export { FlatListScreenContainer, ScreenContainer, ScrollableScreenContainer };

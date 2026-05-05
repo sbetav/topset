@@ -1,5 +1,6 @@
 import DeleteExerciseDialog from "@/components/exercises/delete-exercise-dialog";
 import ExerciseDetailsSheet from "@/components/exercises/exercise-details-sheet";
+import { FlatListScreenContainer } from "@/components/screen-container";
 import Card from "@/components/ui/card";
 import { Empty } from "@/components/ui/empty";
 import { Icon } from "@/components/ui/icon";
@@ -18,7 +19,7 @@ import { PressableFeedback } from "heroui-native/pressable-feedback";
 import { SearchField } from "heroui-native/search-field";
 import { BarbellIcon, CaretRightIcon, PlusIcon } from "phosphor-react-native";
 import React, { useState } from "react";
-import { FlatList, Keyboard, KeyboardAvoidingView, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, View } from "react-native";
 
 const Exercises = () => {
   const behavior = useKeyboardBehavior();
@@ -61,19 +62,19 @@ const Exercises = () => {
 
   return (
     <KeyboardAvoidingView behavior={behavior} className="flex-1">
-      <FlatList
+      <FlatListScreenContainer
         data={exercises}
         keyExtractor={(item) => String(item.id)}
         keyboardShouldPersistTaps="handled"
-        contentContainerClassName="p-5 pb-28 gap-4"
+        contentContainerClassName="gap-4 pb-28"
         ListHeaderComponent={
-          <View className="gap-4">
+          <View className="gap-4 mx-px">
             <View className="flex-row justify-between">
               <Text className="font-semibold text-2xl tracking-tight">
                 Ejercicios
               </Text>
               <Button size="sm" onPress={() => router.push("/exercise")}>
-                <Icon as={PlusIcon} />
+                <Icon as={PlusIcon} className="text-accent-foreground" />
                 <Button.Label>Nuevo</Button.Label>
               </Button>
             </View>
@@ -89,7 +90,7 @@ const Exercises = () => {
         }
         ListEmptyComponent={
           isLoadingExercises ? null : (
-            <Empty className="bg-background">
+            <Empty className="bg-background mx-px">
               <Empty.Header>
                 <Empty.Media>
                   <Icon as={BarbellIcon} size={24} className="text-muted" />
@@ -115,7 +116,10 @@ const Exercises = () => {
           )
         }
         renderItem={({ item }) => (
-          <PressableFeedback onPress={() => handleOpenExercise(item)}>
+          <PressableFeedback
+            onPress={() => handleOpenExercise(item)}
+            className="p-px"
+          >
             <Card className="flex-row items-center justify-between">
               <View>
                 <Text className="font-semibold">{item.name}</Text>

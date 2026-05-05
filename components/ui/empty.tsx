@@ -28,7 +28,7 @@ function EmptyMedia({ className, ...props }: ComponentProps<typeof View>) {
   return (
     <View
       className={cn(
-        "mb-3 aspect-square p-2.5 items-center justify-center rounded-lg bg-surface",
+        "mb-3 aspect-square p-2.5 items-center justify-center rounded-lg bg-surface border border-border dark:border-0",
         className,
       )}
       {...props}
