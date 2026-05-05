@@ -101,6 +101,7 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="exercise" />
           <Stack.Screen name="settings" />
         </Stack>
       </HeroUINativeProvider>

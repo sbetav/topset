@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Keyboard, KeyboardAvoidingViewProps, Platform } from "react-native";
+import { Keyboard, KeyboardAvoidingViewProps } from "react-native";
 
 export function useKeyboardBehavior() {
-  const defaultValue: KeyboardAvoidingViewProps["behavior"] =
-    Platform.OS === "ios" ? "padding" : "height";
+  const defaultValue: KeyboardAvoidingViewProps["behavior"] = "padding";
 
   const [behavior, setBehavior] = useState<
     KeyboardAvoidingViewProps["behavior"] | undefined
