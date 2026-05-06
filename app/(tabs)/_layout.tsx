@@ -55,14 +55,28 @@ const TAB_ROUTES: {
 export default function Layout() {
   const pathname = usePathname();
   const [tabLayouts, setTabLayouts] = useState<Record<string, TabLayout>>({});
+  const [lastMatchedTabName, setLastMatchedTabName] = useState(
+    TAB_ROUTES[0].name,
+  );
   const pillTranslateX = useRef(new Animated.Value(0)).current;
   const pillAnimatedWidth = useRef(new Animated.Value(0)).current;
   const hasMeasuredPill = useRef(false);
-  const activeIndex = getActiveTabIndex(pathname);
-  const activeRoute = TAB_ROUTES[activeIndex];
+  const matchedRoute = getMatchedTabRoute(pathname);
+  const activeRoute =
+    matchedRoute ??
+    TAB_ROUTES.find((route) => route.name === lastMatchedTabName) ??
+    TAB_ROUTES[0];
   const activeTabLayout = activeRoute
     ? tabLayouts[activeRoute.name]
     : undefined;
+
+  useEffect(() => {
+    if (!matchedRoute) return;
+
+    setLastMatchedTabName((currentName) =>
+      currentName === matchedRoute.name ? currentName : matchedRoute.name,
+    );
+  }, [matchedRoute]);
 
   useEffect(() => {
     if (!activeTabLayout) return;
@@ -180,12 +194,8 @@ function TabItem({ isFocused, icon, label, ...props }: TabItemProps) {
   );
 }
 
-function getActiveTabIndex(pathname: string) {
-  const activeIndex = TAB_ROUTES.findIndex((route) =>
-    isTabRouteActive(pathname, route.href),
-  );
-
-  return activeIndex === -1 ? 0 : activeIndex;
+function getMatchedTabRoute(pathname: string) {
+  return TAB_ROUTES.find((route) => isTabRouteActive(pathname, route.href));
 }
 
 function isTabRouteActive(pathname: string, href: Href) {
