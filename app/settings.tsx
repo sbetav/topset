@@ -2,31 +2,20 @@ import GoogleDrive from "@/components/icons/google-drive";
 import { ScreenContainer } from "@/components/screen-container";
 import ThemeToggle from "@/components/settings/theme-toggle";
 import Card from "@/components/ui/card";
-import { Icon } from "@/components/ui/icon";
+import { ScreenHeader } from "@/components/ui/screen-header";
 import { Text } from "@/components/ui/text";
 import { APP_NAME } from "@/lib/constants";
 import dayjs from "dayjs";
-import { router } from "expo-router";
 import { Button } from "heroui-native/button";
 import { Description } from "heroui-native/description";
 import { Label } from "heroui-native/label";
-import { PressableFeedback } from "heroui-native/pressable-feedback";
-import { ArrowLeftIcon } from "phosphor-react-native";
 import React from "react";
 import { View } from "react-native";
 
 export default function Settings() {
   return (
     <View className="flex-1">
-      <View className="flex-row items-center justify-center px-6 py-4 border-b border-border bg-surface dark:bg-surface/70">
-        <PressableFeedback
-          onPress={() => router.back()}
-          className="absolute left-6"
-        >
-          <Icon as={ArrowLeftIcon} size={20} className="text-muted" />
-        </PressableFeedback>
-        <Text className="font-semibold">Configuración</Text>
-      </View>
+      <ScreenHeader title="Configuración" />
       <ScreenContainer className="flex-1">
         <View className="gap-6 flex-1">
           <View className="gap-2">

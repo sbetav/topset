@@ -1,6 +1,5 @@
 import { ScrollableScreenContainer } from "@/components/screen-container";
-import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
+import { ScreenHeader } from "@/components/ui/screen-header";
 import { useExercise, useExerciseMutations } from "@/hooks/use-exercises";
 import { useKeyboardBehavior } from "@/hooks/use-keyboard-behavior";
 import {
@@ -15,10 +14,8 @@ import { Button } from "heroui-native/button";
 import { FieldError } from "heroui-native/field-error";
 import { Input } from "heroui-native/input";
 import { Label } from "heroui-native/label";
-import { PressableFeedback } from "heroui-native/pressable-feedback";
 import { TagGroup } from "heroui-native/tag-group";
 import { TextField } from "heroui-native/text-field";
-import { ArrowLeftIcon } from "phosphor-react-native";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { KeyboardAvoidingView, View } from "react-native";
@@ -77,17 +74,7 @@ const Exercise = () => {
 
   return (
     <KeyboardAvoidingView behavior={behavior} className="flex-1">
-      <View className="flex-row items-center justify-center px-6 py-4 border-b border-border bg-surface dark:bg-surface/70">
-        <PressableFeedback
-          onPress={() => router.back()}
-          className="absolute left-6"
-        >
-          <Icon as={ArrowLeftIcon} size={20} className="text-muted" />
-        </PressableFeedback>
-        <Text className="font-semibold">
-          {isEditing ? "Editar ejercicio" : "Nuevo ejercicio"}
-        </Text>
-      </View>
+      <ScreenHeader title={isEditing ? "Editar ejercicio" : "Nuevo ejercicio"} />
 
       <ScrollableScreenContainer contentContainerClassName="gap-6 flex-1">
         <View className="gap-4 flex-1">
@@ -108,6 +95,7 @@ const Exercise = () => {
                       onChangeText={onChange}
                       placeholder="Press de banca"
                       returnKeyType="done"
+                      autoFocus
                     />
                     <FieldError>{error?.message}</FieldError>
                   </TextField>
