@@ -90,7 +90,7 @@ const Exercises = () => {
         }
         ListEmptyComponent={
           isLoadingExercises ? null : (
-            <Empty className="bg-background mx-px">
+            <Empty className="mx-px">
               <Empty.Header>
                 <Empty.Media>
                   <Icon as={BarbellIcon} size={24} className="text-muted" />
@@ -98,8 +98,8 @@ const Exercises = () => {
                 <Empty.Title>No hay ejercicios</Empty.Title>
                 <Empty.Description>
                   {search
-                    ? "No encontramos ejercicios con ese nombre."
-                    : "Crea tu primer ejercicio para empezar a entrenar."}
+                    ? "No se encontraron ejercicios con ese nombre."
+                    : "Crea tu primer ejercicio."}
                 </Empty.Description>
               </Empty.Header>
               <Empty.Content>
