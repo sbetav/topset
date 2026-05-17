@@ -1,5 +1,6 @@
 import DeleteExerciseDialog from "@/components/exercises/delete-exercise-dialog";
 import ExerciseDetailsSheet from "@/components/exercises/exercise-details-sheet";
+import { MuscleGroupPicker } from "@/components/exercises/muscle-group-picker";
 import { FlatListScreenContainer } from "@/components/screen-container";
 import Card from "@/components/ui/card";
 import { Empty } from "@/components/ui/empty";
@@ -11,7 +12,8 @@ import {
     useExercises,
 } from "@/hooks/use-exercises";
 import { useKeyboardBehavior } from "@/hooks/use-keyboard-behavior";
-import { isMuscleGroup, MUSCLE_GROUP_LABELS } from "@/lib/constants";
+import { type MuscleGroup, MUSCLE_GROUP_LABELS } from "@/lib/constants";
+import { isMuscleGroup } from "@/lib/utils";
 import { router } from "expo-router";
 import { Button } from "heroui-native/button";
 import { Chip } from "heroui-native/chip";
@@ -24,13 +26,16 @@ import { Keyboard, KeyboardAvoidingView, View } from "react-native";
 const Exercises = () => {
   const behavior = useKeyboardBehavior();
   const [search, setSearch] = useState("");
+  const [muscleFilter, setMuscleFilter] = useState<MuscleGroup | null>(null);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null,
   );
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const { data: exercises, isPending: isLoadingExercises } =
-    useExercises(search);
+  const { data: exercises, isPending: isLoadingExercises } = useExercises({
+    search,
+    muscleGroup: muscleFilter,
+  });
   const { deleteExercise } = useExerciseMutations();
 
   function handleOpenExercise(exercise: Exercise) {
@@ -86,6 +91,12 @@ const Exercises = () => {
                 {search ? <SearchField.ClearButton /> : null}
               </SearchField.Group>
             </SearchField>
+
+            <MuscleGroupPicker
+              value={muscleFilter}
+              onChange={setMuscleFilter}
+              variant="horizontal"
+            />
           </View>
         }
         ListEmptyComponent={
@@ -97,9 +108,13 @@ const Exercises = () => {
                 </Empty.Media>
                 <Empty.Title>No hay ejercicios</Empty.Title>
                 <Empty.Description>
-                  {search
-                    ? "No se encontraron ejercicios con ese nombre."
-                    : "Crea tu primer ejercicio."}
+                  {!search && !muscleFilter
+                    ? "Crea tu primer ejercicio."
+                    : search && muscleFilter
+                      ? "No se encontraron ejercicios con esos criterios."
+                      : search
+                        ? "No se encontraron ejercicios con ese nombre."
+                        : "No hay ejercicios en este grupo muscular."}
                 </Empty.Description>
               </Empty.Header>
               <Empty.Content>

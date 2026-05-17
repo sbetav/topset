@@ -1,5 +1,6 @@
 export const APP_NAME = "Topset";
 
+export const ALL_MUSCLE_FILTER_ID = "__all__";
 export const MUSCLE_GROUPS = [
   "chest",
   "shoulders",
@@ -19,7 +20,3 @@ export const MUSCLE_GROUP_LABELS: Record<MuscleGroup, string> = {
   legs: "Piernas",
   core: "Core",
 };
-
-export function isMuscleGroup(value: unknown): value is MuscleGroup {
-  return MUSCLE_GROUPS.includes(value as MuscleGroup);
-}

@@ -1,20 +1,16 @@
+import { MuscleGroupPicker } from "@/components/exercises/muscle-group-picker";
 import { ScrollableScreenContainer } from "@/components/screen-container";
 import { ScreenHeader } from "@/components/ui/screen-header";
 import { useExercise, useExerciseMutations } from "@/hooks/use-exercises";
 import { useKeyboardBehavior } from "@/hooks/use-keyboard-behavior";
-import {
-    type MuscleGroup,
-    isMuscleGroup,
-    MUSCLE_GROUP_LABELS,
-    MUSCLE_GROUPS,
-} from "@/lib/constants";
+import { MUSCLE_GROUPS } from "@/lib/constants";
+import { isMuscleGroup } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router, useLocalSearchParams } from "expo-router";
 import { Button } from "heroui-native/button";
 import { FieldError } from "heroui-native/field-error";
 import { Input } from "heroui-native/input";
 import { Label } from "heroui-native/label";
-import { TagGroup } from "heroui-native/tag-group";
 import { TextField } from "heroui-native/text-field";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -74,7 +70,9 @@ const Exercise = () => {
 
   return (
     <KeyboardAvoidingView behavior={behavior} className="flex-1">
-      <ScreenHeader title={isEditing ? "Editar ejercicio" : "Nuevo ejercicio"} />
+      <ScreenHeader
+        title={isEditing ? "Editar ejercicio" : "Nuevo ejercicio"}
+      />
 
       <ScrollableScreenContainer contentContainerClassName="gap-6 flex-1">
         <View className="gap-4 flex-1">
@@ -106,23 +104,11 @@ const Exercise = () => {
                 control={control}
                 name="muscleGroup"
                 render={({ field: { onChange, value } }) => (
-                  <TagGroup
-                    selectionMode="single"
-                    selectedKeys={value ? new Set([value]) : new Set()}
-                    onSelectionChange={(keys) => {
-                      const [selectedKey] = Array.from(keys);
-                      onChange(isMuscleGroup(selectedKey) ? selectedKey : null);
-                    }}
-                  >
-                    <Label>Grupo muscular</Label>
-                    <TagGroup.List>
-                      {MUSCLE_GROUPS.map((muscleGroup: MuscleGroup) => (
-                        <TagGroup.Item key={muscleGroup} id={muscleGroup}>
-                          {MUSCLE_GROUP_LABELS[muscleGroup]}
-                        </TagGroup.Item>
-                      ))}
-                    </TagGroup.List>
-                  </TagGroup>
+                  <MuscleGroupPicker
+                    value={value ?? null}
+                    onChange={onChange}
+                    variant="wrap"
+                  />
                 )}
               />
             </>
