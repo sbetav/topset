@@ -7,7 +7,7 @@ function EmptyRoot({ className, ...props }: ComponentProps<typeof View>) {
   return (
     <View
       className={cn(
-        "w-full min-w-0 flex-col items-center justify-center gap-4 rounded-xl border bg-surface/50 border-dashed border-border px-8 pt-12 pb-14",
+        "w-full min-w-0 flex-col items-center justify-center gap-3 rounded-xl border bg-surface/40 border-dashed border-border px-8 py-12 pb-13",
         className,
       )}
       {...props}
