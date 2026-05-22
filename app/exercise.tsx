@@ -108,6 +108,7 @@ const Exercise = () => {
                     value={value ?? null}
                     onChange={onChange}
                     variant="wrap"
+                    showAll={false}
                   />
                 )}
               />

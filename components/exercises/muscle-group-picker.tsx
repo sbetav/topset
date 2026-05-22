@@ -15,19 +15,20 @@ interface MuscleGroupPickerProps {
   value: MuscleGroup | null;
   onChange: (value: MuscleGroup | null) => void;
   variant?: "horizontal" | "wrap";
-  allLabel?: string;
   scrollShadowColor?: string;
   gestureHandler?: boolean;
+  showAll?: boolean;
 }
 
 export function MuscleGroupPicker({
   value,
   onChange,
   variant = "horizontal",
-  allLabel = "Todos",
   scrollShadowColor,
   gestureHandler,
+  showAll = true,
 }: MuscleGroupPickerProps) {
+  const allLabel = "Todos";
   const ScrollComponent = gestureHandler ? GHScrollView : ScrollView;
   const tagGroup = (
     <TagGroup
@@ -54,12 +55,14 @@ export function MuscleGroupPicker({
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
           >
-            <Items allLabel={allLabel} />
+            <Items allLabel={allLabel} showAll={showAll} />
           </ScrollComponent>
         </ScrollShadow>
       ) : (
         <TagGroup.List className="flex-row flex-wrap gap-2">
-          <TagGroup.Item id={ALL_MUSCLE_FILTER_ID}>{allLabel}</TagGroup.Item>
+          {showAll && (
+            <TagGroup.Item id={ALL_MUSCLE_FILTER_ID}>{allLabel}</TagGroup.Item>
+          )}
           {MUSCLE_GROUPS.map((muscleGroup) => (
             <TagGroup.Item key={muscleGroup} id={muscleGroup}>
               {MUSCLE_GROUP_LABELS[muscleGroup]}
@@ -73,10 +76,13 @@ export function MuscleGroupPicker({
   return tagGroup;
 }
 
-function Items({ allLabel }: { allLabel: string }) {
+function Items({ allLabel, showAll }: { allLabel: string; showAll: boolean }) {
   return (
     <TagGroup.List className="flex-row flex-nowrap gap-2">
-      <TagGroup.Item id={ALL_MUSCLE_FILTER_ID}>{allLabel}</TagGroup.Item>
+      {showAll && (
+        <TagGroup.Item id={ALL_MUSCLE_FILTER_ID}>{allLabel}</TagGroup.Item>
+      )}
+
       {MUSCLE_GROUPS.map((muscleGroup) => (
         <TagGroup.Item key={muscleGroup} id={muscleGroup}>
           {MUSCLE_GROUP_LABELS[muscleGroup]}
