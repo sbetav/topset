@@ -1,4 +1,4 @@
-import { useCloseOnKeyboardDismiss } from "@/hooks/use-close-on-keyboard-dismiss";
+import { useKeyboard } from "@/hooks/use-keyboard";
 import { Button } from "heroui-native/button";
 import { Dialog } from "heroui-native/dialog";
 import { Input } from "heroui-native/input";
@@ -24,8 +24,7 @@ const DeleteExerciseDialog = ({
   const [confirmationText, setConfirmationText] = useState("");
   const isDeleteEnabled = confirmationText.trim() === "ELIMINAR";
 
-  useCloseOnKeyboardDismiss({
-    isEnabled: isOpen,
+  useKeyboard({
     onClose: () => onOpenChange(false),
   });
 
