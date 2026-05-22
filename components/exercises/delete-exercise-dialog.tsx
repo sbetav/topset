@@ -25,6 +25,7 @@ const DeleteExerciseDialog = ({
   const isDeleteEnabled = confirmationText.trim() === "ELIMINAR";
 
   useKeyboard({
+    enabled: isOpen,
     onClose: () => onOpenChange(false),
   });
 
