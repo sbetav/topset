@@ -1,4 +1,3 @@
-import { useScrollGradient } from "@/hooks/use-scroll-gradient";
 import {
     ALL_MUSCLE_FILTER_ID,
     MUSCLE_GROUP_LABELS,
@@ -7,15 +6,18 @@ import {
 } from "@/lib/constants";
 import { isMuscleGroup } from "@/lib/utils";
 import { LinearGradient } from "expo-linear-gradient";
-import { useThemeColor } from "heroui-native";
+import { ScrollShadow } from "heroui-native/scroll-shadow";
 import { TagGroup } from "heroui-native/tag-group";
-import { Animated, ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
+import { ScrollView as GHScrollView } from "react-native-gesture-handler";
 
 interface MuscleGroupPickerProps {
   value: MuscleGroup | null;
   onChange: (value: MuscleGroup | null) => void;
   variant?: "horizontal" | "wrap";
   allLabel?: string;
+  scrollShadowColor?: string;
+  gestureHandler?: boolean;
 }
 
 export function MuscleGroupPicker({
@@ -23,9 +25,10 @@ export function MuscleGroupPicker({
   onChange,
   variant = "horizontal",
   allLabel = "Todos",
+  scrollShadowColor,
+  gestureHandler,
 }: MuscleGroupPickerProps) {
-  const { leftOpacity, rightOpacity, handleScroll } = useScrollGradient();
-  const [background] = useThemeColor(["background"]);
+  const ScrollComponent = gestureHandler ? GHScrollView : ScrollView;
   const tagGroup = (
     <TagGroup
       selectionMode="single"
@@ -40,53 +43,20 @@ export function MuscleGroupPicker({
       }}
     >
       {variant === "horizontal" ? (
-        <View className="relative">
-          <ScrollView
+        <ScrollShadow
+          LinearGradientComponent={LinearGradient}
+          orientation="horizontal"
+          size={30}
+          color={scrollShadowColor}
+        >
+          <ScrollComponent
             horizontal
             showsHorizontalScrollIndicator={false}
-            onScroll={handleScroll}
             scrollEventThrottle={16}
           >
             <Items allLabel={allLabel} />
-          </ScrollView>
-          <Animated.View
-            pointerEvents="none"
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: 40,
-              opacity: leftOpacity,
-            }}
-          >
-            <LinearGradient
-              colors={[background, "transparent"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{ flex: 1 }}
-            />
-          </Animated.View>
-
-          <Animated.View
-            pointerEvents="none"
-            style={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              bottom: 0,
-              width: 40,
-              opacity: rightOpacity,
-            }}
-          >
-            <LinearGradient
-              colors={["transparent", background]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{ flex: 1 }}
-            />
-          </Animated.View>
-        </View>
+          </ScrollComponent>
+        </ScrollShadow>
       ) : (
         <TagGroup.List className="flex-row flex-wrap gap-2">
           <TagGroup.Item id={ALL_MUSCLE_FILTER_ID}>{allLabel}</TagGroup.Item>
