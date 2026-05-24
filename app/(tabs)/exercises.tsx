@@ -107,7 +107,7 @@ const Exercises = () => {
           data={exercises}
           keyExtractor={(item) => String(item.id)}
           estimatedItemSize={80}
-          contentContainerClassName="pt-1 pb-24"
+          contentContainerClassName="pt-1"
           ListEmptyComponent={
             isLoadingExercises ? null : (
               <Empty className="mx-px">
