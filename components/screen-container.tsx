@@ -1,13 +1,17 @@
+import { useKeyboardHeight } from "@/hooks/use-keyboard-height";
 import { cn } from "@/lib/utils";
+import { FlashList, FlashListProps } from "@shopify/flash-list";
 import React from "react";
 import {
     FlatList,
     FlatListProps,
-    ScrollView,
+    Platform,
     ScrollViewProps,
     View,
     ViewProps,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useResolveClassNames } from "uniwind";
 
 const SCREEN_CLASSNAME = "p-5 pb-7";
 
@@ -25,8 +29,9 @@ const ScrollableScreenContainer = ({
   ...props
 }: ScrollViewProps) => {
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       keyboardShouldPersistTaps="handled"
+      bottomOffset={16}
       contentContainerClassName={cn(
         SCREEN_CLASSNAME,
         contentContainerClassName,
@@ -34,7 +39,7 @@ const ScrollableScreenContainer = ({
       {...props}
     >
       {children}
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -54,4 +59,38 @@ const FlatListScreenContainer = <T,>({
   );
 };
 
-export { FlatListScreenContainer, ScreenContainer, ScrollableScreenContainer };
+const FlashListScreenContainer = <T,>({
+  contentContainerClassName,
+  contentContainerStyle,
+  estimatedItemSize = 80,
+  ...props
+}: FlashListProps<T> & {
+  contentContainerClassName?: string;
+  estimatedItemSize?: number;
+}) => {
+  const keyboardHeight = useKeyboardHeight();
+  const resolvedStyle = useResolveClassNames(
+    cn(SCREEN_CLASSNAME, contentContainerClassName),
+  );
+
+  return (
+    <FlashList
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+      contentInsetAdjustmentBehavior="never"
+      contentContainerStyle={[
+        resolvedStyle,
+        contentContainerStyle,
+        Platform.OS === "android" && { paddingBottom: keyboardHeight },
+      ]}
+      {...props}
+    />
+  );
+};
+
+export {
+    FlashListScreenContainer,
+    FlatListScreenContainer,
+    ScreenContainer,
+    ScrollableScreenContainer
+};

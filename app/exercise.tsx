@@ -2,7 +2,6 @@ import { MuscleGroupPicker } from "@/components/exercises/muscle-group-picker";
 import { ScrollableScreenContainer } from "@/components/screen-container";
 import { ScreenHeader } from "@/components/ui/screen-header";
 import { useExercise, useExerciseMutations } from "@/hooks/use-exercises";
-import { useKeyboardBehavior } from "@/hooks/use-keyboard-behavior";
 import { MUSCLE_GROUPS } from "@/lib/constants";
 import { isMuscleGroup } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +13,7 @@ import { Label } from "heroui-native/label";
 import { TextField } from "heroui-native/text-field";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { KeyboardAvoidingView, View } from "react-native";
+import { View } from "react-native";
 import { z } from "zod";
 
 const exerciseSchema = z.object({
@@ -25,7 +24,6 @@ const exerciseSchema = z.object({
 type ExerciseFormValues = z.infer<typeof exerciseSchema>;
 
 const Exercise = () => {
-  const behavior = useKeyboardBehavior();
   const params = useLocalSearchParams<{ id?: string | string[] }>();
   const idParam = Array.isArray(params.id) ? params.id[0] : params.id;
   const parsedId = idParam ? Number(idParam) : null;
@@ -69,12 +67,12 @@ const Exercise = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior={behavior} className="flex-1">
+    <View className="flex-1">
       <ScreenHeader
         title={isEditing ? "Editar ejercicio" : "Nuevo ejercicio"}
       />
 
-      <ScrollableScreenContainer contentContainerClassName="gap-6 flex-1">
+      <ScrollableScreenContainer contentContainerClassName="gap-6 flex-1 pb-0">
         <View className="gap-4 flex-1">
           {isEditing && isLoadingExercise ? null : (
             <>
@@ -127,7 +125,7 @@ const Exercise = () => {
           </Button.Label>
         </Button>
       </ScrollableScreenContainer>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 

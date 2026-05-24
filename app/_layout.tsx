@@ -15,6 +15,7 @@ import { useThemeColor } from "heroui-native";
 import { HeroUINativeProvider } from "heroui-native/provider";
 import { Alert, BackHandler, TextInput } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUniwind } from "uniwind";
 import migrations from "../db/migrations/migrations";
@@ -84,34 +85,36 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <HeroUINativeProvider
-        config={{
-          devInfo: {
-            stylingPrinciples: false,
-          },
-        }}
-      >
-        <StatusBar style={theme === "dark" ? "light" : "dark"} />
-        <Stack
-          initialRouteName="(tabs)"
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: background,
-              paddingTop: insets.top,
-              paddingBottom: insets.bottom,
-              paddingLeft: insets.left,
-              paddingRight: insets.right,
+      <KeyboardProvider>
+        <HeroUINativeProvider
+          config={{
+            devInfo: {
+              stylingPrinciples: false,
             },
-            animation: "ios_from_right",
           }}
         >
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="exercise" />
-          <Stack.Screen name="session" />
-          <Stack.Screen name="settings" />
-        </Stack>
-      </HeroUINativeProvider>
+          <StatusBar style={theme === "dark" ? "light" : "dark"} />
+          <Stack
+            initialRouteName="(tabs)"
+            screenOptions={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: background,
+                paddingTop: insets.top,
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right,
+              },
+              animation: "ios_from_right",
+            }}
+          >
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="exercise" />
+            <Stack.Screen name="session" />
+            <Stack.Screen name="settings" />
+          </Stack>
+        </HeroUINativeProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   );
 }
