@@ -1,10 +1,8 @@
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { LinearGradient } from "expo-linear-gradient";
 import { Href, usePathname } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
-import { useThemeColor } from "heroui-native";
 import {
     BarbellIcon,
     ClockCounterClockwiseIcon,
@@ -72,8 +70,6 @@ export default function Layout() {
     ? tabLayouts[activeRoute.name]
     : undefined;
 
-  const [background] = useThemeColor(["background"]);
-
   useEffect(() => {
     if (!matchedRoute) return;
 
@@ -130,20 +126,9 @@ export default function Layout() {
   return (
     <Tabs>
       <TabSlot />
-      {/* Gradient scrim behind the tab bar */}
-      <LinearGradient
-        colors={["transparent", background]}
-        pointerEvents="none"
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 100,
-        }}
-      />
+
       <TabList asChild>
-        <View className="bg-surface mx-4 mb-3 p-1 border border-border rounded-full absolute bottom-0 left-0 right-0 overflow-hidden">
+        <View className="bg-surface mx-4 mb-3 mt-4 p-1 border border-border rounded-full overflow-hidden">
           {activeTabLayout ? (
             <Animated.View
               pointerEvents="none"
