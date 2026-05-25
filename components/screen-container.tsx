@@ -1,17 +1,15 @@
-import { useKeyboardHeight } from "@/hooks/use-keyboard-height";
 import { cn } from "@/lib/utils";
 import { FlashList, FlashListProps } from "@shopify/flash-list";
 import React from "react";
 import {
     FlatList,
     FlatListProps,
-    Platform,
+    ScrollView,
     ScrollViewProps,
     View,
     ViewProps,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { useResolveClassNames } from "uniwind";
 
 const SCREEN_CLASSNAME = "p-5 pb-7";
 
@@ -59,6 +57,19 @@ const FlatListScreenContainer = <T,>({
   );
 };
 
+const RenderScrollComponent = React.forwardRef<ScrollView, ScrollViewProps>(
+  (props, ref) => (
+    <KeyboardAwareScrollView
+      bottomOffset={0}
+      extraKeyboardSpace={-100}
+      {...props}
+      ref={ref}
+    />
+  ),
+);
+
+RenderScrollComponent.displayName = "RenderScrollComponent";
+
 const FlashListScreenContainer = <T,>({
   contentContainerClassName,
   contentContainerStyle,
@@ -68,21 +79,16 @@ const FlashListScreenContainer = <T,>({
   contentContainerClassName?: string;
   estimatedItemSize?: number;
 }) => {
-  const keyboardHeight = useKeyboardHeight();
-  const resolvedStyle = useResolveClassNames(
-    cn(SCREEN_CLASSNAME, contentContainerClassName),
-  );
-
   return (
     <FlashList
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
-      contentInsetAdjustmentBehavior="never"
-      contentContainerStyle={[
-        resolvedStyle,
-        contentContainerStyle,
-        Platform.OS === "android" && { paddingBottom: keyboardHeight },
-      ]}
+      contentContainerClassName={cn(
+        SCREEN_CLASSNAME,
+        contentContainerClassName,
+      )}
+      contentContainerStyle={contentContainerStyle}
+      renderScrollComponent={RenderScrollComponent}
       {...props}
     />
   );
