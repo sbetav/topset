@@ -8,6 +8,27 @@
       "when": 1777510079699,
       "tag": "0000_uneven_sentry",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1778000452962,
+      "tag": "0001_busy_whistler",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1778002426622,
+      "tag": "0002_blue_guardian",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1779679144926,
+      "tag": "0003_drop_session_set_weight_unit",
+      "breakpoints": true
     }
   ]
 }

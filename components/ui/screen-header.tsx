@@ -8,9 +8,10 @@ import { Text } from "./text";
 
 type ScreenHeaderProps = {
   title: string;
+  right?: React.ReactNode;
 };
 
-export function ScreenHeader({ title }: ScreenHeaderProps) {
+export function ScreenHeader({ title, right }: ScreenHeaderProps) {
   return (
     <View className="flex-row items-center justify-center px-6 py-4 border-b border-border bg-surface dark:bg-surface/70">
       <PressableFeedback
@@ -20,6 +21,7 @@ export function ScreenHeader({ title }: ScreenHeaderProps) {
         <Icon as={ArrowLeftIcon} size={20} className="text-muted" />
       </PressableFeedback>
       <Text className="font-semibold">{title}</Text>
+      {right && <View className="absolute right-5">{right}</View>}
     </View>
   );
 }

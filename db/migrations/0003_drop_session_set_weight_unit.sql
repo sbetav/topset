@@ -1,0 +1,1 @@
+ALTER TABLE `workout_session_set` DROP COLUMN `weight_unit`;

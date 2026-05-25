@@ -1,0 +1,1 @@
+ALTER TABLE `workout_session_exercise` ADD `weight_unit` text DEFAULT 'kg' NOT NULL;

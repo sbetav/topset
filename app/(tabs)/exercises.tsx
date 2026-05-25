@@ -2,6 +2,11 @@ import DeleteExerciseDialog from "@/components/exercises/delete-exercise-dialog"
 import ExerciseDetailsSheet from "@/components/exercises/exercise-details-sheet";
 import { MuscleGroupPicker } from "@/components/exercises/muscle-group-picker";
 import {
+    createLastMarksByExercise,
+    formatLastMarkSet,
+    getExerciseKey,
+} from "@/components/history/session-utils";
+import {
     FlashListScreenContainer,
     ScreenContainer,
 } from "@/components/screen-container";
@@ -14,8 +19,10 @@ import {
     useExerciseMutations,
     useExercises,
 } from "@/hooks/use-exercises";
+import { useLastExerciseMarks } from "@/hooks/use-sessions";
 import { type MuscleGroup, MUSCLE_GROUP_LABELS } from "@/lib/constants";
 import { isMuscleGroup } from "@/lib/utils";
+import dayjs from "dayjs";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { Button } from "heroui-native/button";
@@ -24,7 +31,7 @@ import { PressableFeedback } from "heroui-native/pressable-feedback";
 import { ScrollShadow } from "heroui-native/scroll-shadow";
 import { SearchField } from "heroui-native/search-field";
 import { BarbellIcon, CaretRightIcon, PlusIcon } from "phosphor-react-native";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Keyboard, Pressable, View } from "react-native";
 
 const Exercises = () => {
@@ -39,7 +46,12 @@ const Exercises = () => {
     search,
     muscleGroup: muscleFilter,
   });
+  const { data: lastExerciseMarkRows } = useLastExerciseMarks();
   const { deleteExercise } = useExerciseMutations();
+  const lastMarksByExercise = useMemo(
+    () => createLastMarksByExercise(lastExerciseMarkRows),
+    [lastExerciseMarkRows],
+  );
 
   function handleOpenExercise(exercise: Exercise) {
     Keyboard.dismiss();
@@ -140,35 +152,40 @@ const Exercises = () => {
             )
           }
           ItemSeparatorComponent={() => <View className="h-4" />}
-          renderItem={({ item }) => (
-            <PressableFeedback
-              onPress={() => handleOpenExercise(item)}
-              className="p-px"
-            >
-              <Card className="flex-row items-center justify-between">
-                <View>
-                  <Text className="font-semibold">{item.name}</Text>
-                  <View className="flex-row items-center gap-2">
-                    <Chip variant="soft" size="sm" className="mt-1">
-                      {isMuscleGroup(item.muscleGroup)
-                        ? MUSCLE_GROUP_LABELS[item.muscleGroup]
-                        : "Sin grupo muscular"}
-                    </Chip>
-                    <Text className="text-muted text-sm mt-px">&bull;</Text>
+          renderItem={({ item }) => {
+            const lastMark = lastMarksByExercise.get(getExerciseKey(item));
+
+            return (
+              <PressableFeedback
+                onPress={() => handleOpenExercise(item)}
+                className="p-px"
+              >
+                <Card className="flex-row items-center justify-between">
+                  <View>
+                    <View className="flex-row items-center gap-1.5">
+                      <Text className="font-semibold">{item.name}</Text>
+                      <Chip variant="soft" size="sm" className="mt-0.5">
+                        {isMuscleGroup(item.muscleGroup)
+                          ? MUSCLE_GROUP_LABELS[item.muscleGroup]
+                          : "Sin grupo muscular"}
+                      </Chip>
+                    </View>
                     <Text className="text-sm text-muted mt-px">
-                      Sin datos a\u00fan
+                      {lastMark
+                        ? `${dayjs(lastMark.sessionStartedAt).format("MMMM D YYYY")} • ${formatLastMarkSet(lastMark.sets[0], lastMark.weightUnit)}`
+                        : "Sin datos aún"}
                     </Text>
                   </View>
-                </View>
-                <Icon
-                  as={CaretRightIcon}
-                  size={16}
-                  weight="bold"
-                  className="text-muted"
-                />
-              </Card>
-            </PressableFeedback>
-          )}
+                  <Icon
+                    as={CaretRightIcon}
+                    size={16}
+                    weight="bold"
+                    className="text-muted"
+                  />
+                </Card>
+              </PressableFeedback>
+            );
+          }}
         />
       </ScrollShadow>
 

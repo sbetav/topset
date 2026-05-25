@@ -1,6 +1,7 @@
+import type { MuscleGroup } from "@/lib/constants";
 import { db } from "@/db/client";
 import { exercises } from "@/db/schema";
-import { asc, eq, like } from "drizzle-orm";
+import { and, asc, eq, like } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 export type Exercise = typeof exercises.$inferSelect;
@@ -10,15 +11,33 @@ export type ExerciseFormValues = {
   muscleGroup?: string | null;
 };
 
-export function useExercises(search = "") {
-  const normalizedSearch = search.trim();
-  const filters = normalizedSearch
-    ? like(exercises.name, `%${normalizedSearch}%`)
-    : undefined;
+export type UseExercisesFilters = {
+  search?: string;
+  muscleGroup?: MuscleGroup | null;
+};
+
+export function useExercises(filters: UseExercisesFilters = {}) {
+  const normalizedSearch = (filters.search ?? "").trim();
+  const muscleGroup = filters.muscleGroup ?? null;
+
+  const conditions = [];
+  if (normalizedSearch) {
+    conditions.push(like(exercises.name, `%${normalizedSearch}%`));
+  }
+  if (muscleGroup) {
+    conditions.push(eq(exercises.muscleGroup, muscleGroup));
+  }
+
+  const whereClause =
+    conditions.length === 0
+      ? undefined
+      : conditions.length === 1
+        ? conditions[0]
+        : and(...conditions);
 
   const query = useLiveQuery(
-    db.select().from(exercises).where(filters).orderBy(asc(exercises.name)),
-    [normalizedSearch],
+    db.select().from(exercises).where(whereClause).orderBy(asc(exercises.name)),
+    [normalizedSearch, muscleGroup],
   );
 
   return {
